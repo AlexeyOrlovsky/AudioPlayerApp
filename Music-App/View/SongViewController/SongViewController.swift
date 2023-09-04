@@ -21,7 +21,7 @@ class SongViewController: UIViewController {
     public var position: Int = 0 // position elements in struct Song / позиция элемента в списке
     public var songs: [Song] = []
     
-    // MARK: Add elements on scene
+    /// UI Elements
     let stripButton: UIButton = {
         let image = UIButton()
         image.setImage(UIImage(named: "strip"), for: .normal)
