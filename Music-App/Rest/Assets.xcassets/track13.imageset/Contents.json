@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "31o-uqx+wbL._UXNaN_FMjpg_QL85_.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

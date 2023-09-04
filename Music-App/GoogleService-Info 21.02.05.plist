@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>324612151615-ka40q20qg228533qdqsj33rndk2dl5mi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.324612151615-ka40q20qg228533qdqsj33rndk2dl5mi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCzdDDltWOV-bXzcZuTQgrcwrtUQcPXqzA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>324612151615</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>morrterry2021-gmail.com.VPNApp</string>
+	<key>PROJECT_ID</key>
+	<string>vpnapp-5634b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>vpnapp-5634b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:324612151615:ios:41c608c5f2476a4814db8a</string>
+</dict>
+</plist>
