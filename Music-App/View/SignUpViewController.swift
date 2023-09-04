@@ -13,7 +13,7 @@ import SnapKit
 
 class SignUpViewController: UIViewController {
     
-    // MARK: Add elements on scene
+    /// UI Elements
     let label: UILabel = {
         let label = UILabel()
         label.text = "Create"
@@ -80,10 +80,18 @@ class SignUpViewController: UIViewController {
         return button
     }()
     
-    // MARK: Add object on View, and target for button
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupViewDidLoad()
+        setupAddSubviews()
+    }
+    
+    func setupViewDidLoad() {
         view.backgroundColor = UIColor(red: 15/255, green: 15/255, blue: 15/255, alpha: 1)
+    }
+    
+    func setupAddSubviews() {
         view.addSubview(label)
         view.addSubview(emailField)
         view.addSubview(passwordField)
@@ -92,8 +100,8 @@ class SignUpViewController: UIViewController {
         
         enterButton.addTarget(self, action: #selector(enterButtonTarget), for: .touchUpInside)
     }
-    
-    // MARK: Constraints for elements
+     
+    /// Constraints
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -132,49 +140,36 @@ class SignUpViewController: UIViewController {
     }
 }
 
-// MARK: Target button
-
+/// @objc funcs
 extension SignUpViewController {
     @objc func enterButtonTarget() {
         print("Enter button tapped")
         
         guard let email = emailField.text, !email.isEmpty,
-              let password = passwordField.text, !password.isEmpty,
-                let passwordRepeat = repeatPassword.text, !passwordRepeat.isEmpty
-        else {
-            print("Missimg field data")
-            showInvalidRegister()
-            return
-        }
+              let password = passwordField.text, !password.isEmpty, password.count >= 6,
+              let passwordRepeat = repeatPassword.text, !passwordRepeat.isEmpty else { showInvalidRegister(); return }
         
+        guard passwordField.text == repeatPassword.text else { showMatchPass(); return }
+        
+        createAccountAtFirebase(email: email, password: password)
+    }
+    
+    func createAccountAtFirebase(email: String, password: String) {
         Firebase.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] result, error in
-            guard let strongSelf = self else {
-                return
-            }
+            guard let strongSelf = self else { return }
             
             guard error == nil else {
-                // show account creation
                 strongSelf.showLoginIn(email: email, password: password)
                 return
             }
+            
             print("You have signed in ")
             self?.dismiss(animated: true)
         })
-        
-        guard passwordField.text == repeatPassword.text else {
-            showMatchPass()
-            return
-        }
-        if passwordField.text!.count < 6 {
-            showMinimumCharacters()
-            return
-        }
-        return
     }
 }
 
-// MARK: Alert on registration error
-
+/// Alerts
 extension SignUpViewController {
     func showMinimumCharacters() {
         let alert = UIAlertController(title: "Password is too short!", message: "the minimum number of characters in the password is 6, the more complex your password, the more secure your account", preferredStyle: .alert)
@@ -201,51 +196,33 @@ extension SignUpViewController {
         alert.addAction(UIAlertAction(title: "Create",
                                       style: .default,
                                       handler: {_ in
-
+            
             Firebase.Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
-
+                
                 guard let _ = self else {
                     return
                 }
-                // Условие создающее аккаунт
+                
                 guard error == nil else {
                     // show account creation
                     print("Account creation failed")
                     return
                 }
-                // В этом блоке создана переменная userId = которая передается в document при обращении к firebase
+                
                 let userId = result?.user.uid
                 let email = email
                 let data: [String: Any] = ["email": email]
                 Firestore.firestore().collection("users").document(userId!).setData(data)
-                // Если аккаун создался
+                // Если аккаунт создался
                 
                 print("You have signed in")
                 self?.dismiss(animated: true)
             }
-
+            
         }))
         alert.addAction(UIAlertAction(title: "Cancel",
                                       style: .cancel))
-
+        
         present(alert, animated: true)
     }
 }
-
-struct SignUpCanvas: PreviewProvider {
-    static var previews: some View {
-        conteinerView().ignoresSafeArea(.all)
-    }
-    
-    struct conteinerView: UIViewControllerRepresentable {
-        
-        func makeUIViewController(context: Context) -> SignUpViewController {
-            return SignUpViewController()
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            //
-        }
-    }
-}
-

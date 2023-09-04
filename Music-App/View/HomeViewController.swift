@@ -11,10 +11,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    // MARK: Array Song Model
+    /// Array Song Model
     let content = ContentCell.content
     
-    // MARK: collectionView add section in collection
+    /// collectionView add section in collection
     fileprivate let collectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
@@ -25,38 +25,34 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        EditNavigationBar()
-        configureCollectionView()
+        setupViewDidLoad()
+        setupCollectionView()
     }
     
-    func EditNavigationBar() {
-        //MARK: NavigationBar
+    func setupViewDidLoad() {
         navigationController?.navigationBar.isTranslucent = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "door.left.hand.open"), style: .done, target: self, action: #selector(leaveButton))
         navigationItem.leftBarButtonItem?.tintColor = .tertiaryLabel
         let titleNavigationBar = UILabel()
         titleNavigationBar.text = "Home"
         titleNavigationBar.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        
         navigationItem.titleView = titleNavigationBar
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // frame collection
-        collectionView.frame = view.bounds
-    }
-    
-    // func collection visual edit
-    private func configureCollectionView() {
+
+    private func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.register(CustomSongCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.showsVerticalScrollIndicator = false
+        
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.showsVerticalScrollIndicator = false
+        
+        collectionView.frame = view.bounds
     }
-    
+}
+
+/// @objc funcs
+extension HomeViewController {
     @objc func leaveButton() {
             let alert = UIAlertController(title: "Are you sure you want to log out of your account?", message: "If yes click the button below", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel",
@@ -66,32 +62,27 @@ class HomeViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler:
                                             {_ in
                 UserDefaults.standard.removeObject(forKey: "isUserLoggedIn")
-                //UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
                 NavigationManager.shared.showNotAuthorizedUserStage()
             }))
             present(alert, animated: true)
     }
 }
 
-// MARK: Collection extension Delegate, DataSource
+/// UICollectionViewDelegateFlowLayout & UICollectionViewDataSource
 extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    // func form frame collection
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.width/2)
     }
     
-    // add section data
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return content.count
     }
     
-    // number section
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
-    // Cell edit
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CustomSongCell
         cell.backgroundColor = .quaternarySystemFill
@@ -118,7 +109,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     
-    //MARK: Create form section
+    // MARK: Create form section
     static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
         switch section {
         case 0:
@@ -133,8 +124,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             
             // Section
             let section = NSCollectionLayoutSection(group: horizontalGroup)
-            // Позволяет скролить в сторону
-            section.orthogonalScrollingBehavior = .groupPaging // .groupPaging подтягивает скрол туда, где перепадает больший процент, .continuous - делает скрол без анимации
+            section.orthogonalScrollingBehavior = .groupPaging
             return section
         case 1:
             // Item
@@ -162,23 +152,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             // Позволяет скролить в сторону
             section.orthogonalScrollingBehavior = .groupPaging // .groupPaging подтягивает скрол туда, где перепадает больший процент, .continuous - делает скрол без анимации
             return section
-        }
-    }
-}
-
-struct HomeViewCanvas: PreviewProvider {
-    static var previews: some View {
-        conteinerView().ignoresSafeArea(.all)
-    }
-    
-    struct conteinerView: UIViewControllerRepresentable {
-        
-        func makeUIViewController(context: Context) -> HomeViewController {
-            return HomeViewController()
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            //
         }
     }
 }

@@ -13,7 +13,7 @@ import SnapKit
 
 class SignInViewController: UIViewController {
     
-    // MARK: Add elements on scene
+    /// UI Elements
     let label: UILabel = {
         let label = UILabel()
         label.text = "Sign in"
@@ -59,12 +59,6 @@ class SignInViewController: UIViewController {
         return button
     }()
     
-//    let googleButton: UIButton = {
-//        let button = UIButton()
-//        button.setImage(UIImage(named: "googleButton"), for: .normal)
-//        return button
-//    }()
-    
     let createButton: UIButton = {
         let button = UIButton()
         button.setTitle("Create", for: .normal)
@@ -73,23 +67,29 @@ class SignInViewController: UIViewController {
         return button
     }()
     
-    // MARK: Add object on View, and target for button
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupViewDidLoad()
+        setupAddSubviews()
+    }
+    
+    func setupViewDidLoad() {
         view.backgroundColor = UIColor(red: 11/255, green: 11/255, blue: 11/255, alpha: 1)
+    }
+    
+    func setupAddSubviews() {
         view.addSubview(label)
         view.addSubview(emailField)
         view.addSubview(passwordField)
         view.addSubview(enterButton)
-        //view.addSubview(googleButton)
         view.addSubview(createButton)
         
         enterButton.addTarget(self, action: #selector(enterButtonTarget), for: .touchUpInside)
         createButton.addTarget(self, action: #selector(actionButtonTarget), for: .touchUpInside)
     }
     
-    // MARK: Constraints for elements
-
+    /// Constraints
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -119,11 +119,6 @@ class SignInViewController: UIViewController {
             make.height.equalTo(50)
         }
         
-//        googleButton.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.top.equalToSuperview().inset(560)
-//        }
-        
         createButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(660)
@@ -131,42 +126,39 @@ class SignInViewController: UIViewController {
     }
 }
 
-// MARK: Target button
+/// @objc funcs
 extension SignInViewController {
     
-    // Ection button
     @objc func actionButtonTarget() {
         present(SignUpViewController(), animated: true)
     }
     
-    // Enter button
-    // MARK: Conect registration with Firebase
     @objc private func enterButtonTarget() {
         emailField.resignFirstResponder()
         passwordField.resignFirstResponder()
         
         guard let email = emailField.text, let password = passwordField.text,
-              !email.isEmpty, !password.isEmpty, password.count >= 6 else {
-            showEmptyFields()
-            return
+              !email.isEmpty, !password.isEmpty, password.count >= 6 else { showEmptyFields(); return }
+        
+        existenceUser(email: email, password: password)
+    }
+    
+    func existenceUser(email: String, password: String) {
+        Auth.auth().signIn(withEmail: email, password: password) { [self] authResults, error in
+            guard let result = authResults, error == nil else { showInvalidLogin(); return }
+            _ = result.user
         }
         
-        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password) { authResults, error in
-            guard let result = authResults, error == nil else {
-                self.showInvalidLogin()
-                print("Failed to log in user with email: \(email)")
-                return
-            }
-            
-            _ = result.user
-            UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
-            NavigationManager.shared.showAuthorizedUserStage()
-        }
+        saveUserInUserDefaults()
+    }
+    
+    func saveUserInUserDefaults() {
+        UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+        NavigationManager.shared.showAuthorizedUserStage()
     }
 }
 
-// MARK: Alert on login error
-
+/// Alerts
 extension SignInViewController {
     func showEmptyFields() {
         let alert = UIAlertController(title: "Empty!", message: "Fill in all the fields. Email and password", preferredStyle: .alert)
@@ -179,23 +171,6 @@ extension SignInViewController {
         let alert = UIAlertController(title: "This account does not exist!", message: "This account does not exist, check the data or create a new account", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
         present(alert, animated: true)
-    }
-}
-
-struct SignInCanvas: PreviewProvider {
-    static var previews: some View {
-        conteinerView().ignoresSafeArea(.all)
-    }
-    
-    struct conteinerView: UIViewControllerRepresentable {
-        
-        func makeUIViewController(context: Context) -> SignInViewController {
-            return SignInViewController()
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-            //
-        }
     }
 }
 
