@@ -14,8 +14,8 @@ class MusicTextViewController: UIViewController {
     public var position: Int = 0
     public var songs: [Song] = []
     
-    // MARK: Add elements on scene
-    let strip: UIButton  = {
+    /// UI Elements
+    let stripButton: UIButton  = {
         let image = UIButton()
         image.setImage(UIImage(named: "strip"), for: .normal)
         image.setTitleColor(.black, for: .normal)
@@ -30,7 +30,7 @@ class MusicTextViewController: UIViewController {
         return label
     }()
     
-    let musicText: UILabel = {
+    let musicTextLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 20, y: 20, width: 340, height: 600))
         //label.textColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
@@ -38,33 +38,36 @@ class MusicTextViewController: UIViewController {
         return label
     }()
     
-    // MARK: Add object on View, and target for button
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         
-        view.addSubview(strip)
-        view.addSubview(musicText)
+        setupViewDidLoad()
+        setupAddSubviews()
+        configure()
+    }
+    
+    func setupViewDidLoad() {
+        view.backgroundColor = .systemBackground
+    }
+    
+    func setupAddSubviews() {
+        view.addSubview(stripButton)
+        view.addSubview(musicTextLabel)
         view.addSubview(textLabel)
         
-        strip.addTarget(self, action: #selector(stripTarget), for: .touchUpInside)
-        
-        configure()
+        stripButton.addTarget(self, action: #selector(stripTarget), for: .touchUpInside)
     }
     
     func configure() {
         let song = songs[position]
-        musicText.text = song.textMusic
+        musicTextLabel.text = song.textMusic
     }
     
-    @objc func stripTarget() {
-        dismiss(animated: true)
-    }
-    
+    /// Constraints
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        strip.snp.makeConstraints { make in
+        stripButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(5)
         }
@@ -74,11 +77,19 @@ class MusicTextViewController: UIViewController {
             make.left.equalToSuperview().inset(30)
         }
         
-        musicText.snp.makeConstraints { make in
+        musicTextLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(100)
             make.left.equalToSuperview().inset(30)
             make.width.equalTo(340)
         }
+    }
+}
+
+/// @objc funcs
+extension MusicTextViewController {
+    
+    @objc func stripTarget() {
+        dismiss(animated: true)
     }
 }
 

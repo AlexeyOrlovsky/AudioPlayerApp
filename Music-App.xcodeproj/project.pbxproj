@@ -167,8 +167,7 @@
 		D22FFEBF2A0A899600708403 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D22FFEC02A0A89CB00708403 /* SignInViewController.swift */,
-				D22FFEC22A0A89D900708403 /* SignUpViewController.swift */,
+				D29A46E92AAB997D00B2FB48 /* RegistrationViewControllers */,
 				D242F37F2A0A7A450074CF1E /* HomeViewController.swift */,
 				D22FFECA2A0A8A5400708403 /* SongViewController */,
 				D22FFED02A0A8B8400708403 /* Tracks */,
@@ -304,6 +303,15 @@
 				D242F39E2A0A7A460074CF1E /* Music_AppUITestsLaunchTests.swift */,
 			);
 			path = "Music-AppUITests";
+			sourceTree = "<group>";
+		};
+		D29A46E92AAB997D00B2FB48 /* RegistrationViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				D22FFEC02A0A89CB00708403 /* SignInViewController.swift */,
+				D22FFEC22A0A89D900708403 /* SignUpViewController.swift */,
+			);
+			path = RegistrationViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

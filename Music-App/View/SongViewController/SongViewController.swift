@@ -13,7 +13,7 @@ import UIKit
 
 class SongViewController: UIViewController {
     
-    // Conect Audio system with App
+    /// Conect Audio system with App
     var audioPlayer = AVAudioPlayer() // система плеера / то засчет чего играет музыка / останавливается или играет
     var repeatAction = false
     let scrollAudioRoad = UISlider() // аудио дорожка
@@ -29,13 +29,13 @@ class SongViewController: UIViewController {
         return image
     }()
     
-    let nameTrack: UILabel = {
+    let nameTrackLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 22, weight: .black)
         return label
     }()
     
-    let imageTrack: UIButton  = {
+    let imageTrackButton: UIButton  = {
         let image = UIButton()
         image.layer.cornerRadius = 20
         image.layer.masksToBounds = true
@@ -80,7 +80,7 @@ class SongViewController: UIViewController {
         return button
     }()
     
-    let artistName: UIButton  = {
+    let artistNameButton: UIButton  = {
         let button = UIButton()
         button.setTitleColor(.secondaryLabel, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -97,27 +97,25 @@ class SongViewController: UIViewController {
         return repeatButton
     }()
     
-    // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        targetsAndAddSubviews()
-        configure()
+        setupAddSubviews()
         audioSlider()
+        configure()
     }
     
-    // MARK: Add object on View, and target
-    func targetsAndAddSubviews() {
+    func setupAddSubviews() {
         view.backgroundColor = .systemBackground
         
-        view.addSubview(imageTrack)
+        view.addSubview(imageTrackButton)
         view.addSubview(playPauseButton)
         view.addSubview(previousButton)
         view.addSubview(nextButton)
-        view.addSubview(nameTrack)
+        view.addSubview(nameTrackLabel)
         view.addSubview(stripButton)
         view.addSubview(textMusicButton)
-        view.addSubview(artistName)
+        view.addSubview(artistNameButton)
         view.addSubview(repeatButton)
         
         playPauseButton.addTarget(self, action: #selector(playPauseButtonAction), for: .touchUpInside)
@@ -148,9 +146,9 @@ class SongViewController: UIViewController {
         if position >= 0 && position < songs.count {
             let song = songs[position]
             
-            imageTrack.setImage(song.image, for: .normal)
-            nameTrack.text = song.name
-            artistName.setTitle(song.artistName, for: .normal)
+            imageTrackButton.setImage(song.image, for: .normal)
+            nameTrackLabel.text = song.name
+            artistNameButton.setTitle(song.artistName, for: .normal)
             
             let sound = Bundle.main.path(forResource: song.trackName, ofType: "mp3")
             
@@ -178,7 +176,7 @@ class SongViewController: UIViewController {
         }
     }
     
-    // MARK: viewDidLayoutSubviews
+    /// Constraints
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -187,19 +185,19 @@ class SongViewController: UIViewController {
             make.top.equalToSuperview().inset(5)
         }
         
-        imageTrack.snp.makeConstraints { make in
+        imageTrackButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(70)
             make.width.equalTo(320)
             make.height.equalTo(320)
         }
         
-        nameTrack.snp.makeConstraints { make in
+        nameTrackLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(415)
         }
         
-        artistName.snp.makeConstraints { make in
+        artistNameButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(440)
         }
@@ -236,13 +234,13 @@ class SongViewController: UIViewController {
         }
     }
     
-    // MARK: viewDidDisappear
+    /// viewDidDisappear
     override func viewDidDisappear(_ animated: Bool) {
         audioPlayer.stop()
     }
 }
 
-// MARK: @objc funcs
+/// @objc funcs
 extension SongViewController {
     
     @objc func audioScrollAction() {
@@ -337,7 +335,7 @@ extension SongViewController {
     }
 }
 
-// MARK: AVAudioPlayerDelegate
+/// AVAudioPlayerDelegate
 extension SongViewController: AVAudioPlayerDelegate {
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {

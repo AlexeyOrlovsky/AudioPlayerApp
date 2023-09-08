@@ -19,6 +19,7 @@ class CustomSongCell: UICollectionViewCell {
         }
     }
     
+    /// UI Elements
     fileprivate let imageTrack: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "track8")
@@ -47,8 +48,6 @@ class CustomSongCell: UICollectionViewCell {
         
         setupCell()
     }
-    
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

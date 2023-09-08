@@ -7,15 +7,13 @@
 
 import UIKit
 
-// To display screens. Authorization and Registered
-
 class NavigationManager {
     static let shared = NavigationManager()
     
-    // MARK: show Login View
+    /// Show Login View
     func showNotAuthorizedUserStage() {
         
-        let controller = SignInViewController() // SignIn
+        let controller = SignInViewController()
         let navigationController = UINavigationController(rootViewController: controller)
         
         let sceneDelegate = UIApplication.shared.connectedScenes
@@ -24,14 +22,13 @@ class NavigationManager {
         sceneDelegate.window?.makeKeyAndVisible()
     }
     
-    // MARK: show Login in View
+    /// Show Login in View
     func showAuthorizedUserStage() {
 
         let controller = UINavigationController(rootViewController: HomeViewController())
 
         let sceneDelegate = UIApplication.shared.connectedScenes
             .first!.delegate as! SceneDelegate
-
         sceneDelegate.window?.rootViewController = controller
         sceneDelegate.window?.makeKeyAndVisible()
     }

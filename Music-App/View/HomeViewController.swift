@@ -96,7 +96,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         return cell
     }
     
-    // present SongController
+    /// present SongController
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let position = indexPath.row
         
@@ -109,47 +109,50 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     
-    // MARK: Create form section
+    /// Create form section
     static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
         switch section {
         case 0:
-            //Item
+            
+            /// Item
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize (widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
             item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
             
-            // Group
+            /// Group
             let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(360)), subitem: item, count: 4)
             
             let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .absolute(390)), subitem: verticalGroup, count: 1)
             
-            // Section
+            /// Section
             let section = NSCollectionLayoutSection(group: horizontalGroup)
             section.orthogonalScrollingBehavior = .groupPaging
             return section
+            
         case 1:
-            // Item
+            /// Item
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize (widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
             item.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 10, bottom: 4, trailing: 10)
             
-            // Group
+            /// Group
             let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(640)), subitem: item, count: 8)
             
-            // Section
+            /// Section
             let section = NSCollectionLayoutSection(group: verticalGroup)
             section.orthogonalScrollingBehavior = .groupPaging
             return section
+            
         default:
             
-            //Item
+            /// Item
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize (widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
             item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
             
-            // Group
+            /// Group
             let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(390)), subitem: item, count: 3)
             
-            // Section
+            /// Section
             let section = NSCollectionLayoutSection(group: verticalGroup)
-            // Позволяет скролить в сторону
+            /// Позволяет скролить в сторону
             section.orthogonalScrollingBehavior = .groupPaging // .groupPaging подтягивает скрол туда, где перепадает больший процент, .continuous - делает скрол без анимации
             return section
         }
